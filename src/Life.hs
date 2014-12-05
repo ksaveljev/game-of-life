@@ -17,11 +17,11 @@ type Board = U.Vector Int
 type Width = Int
 type Height = Int
 
-data Generation = Generation { width     :: Int
-                             , height    :: Int
-                             , cellWidth :: Float
-                             , genPerSec :: Int
-                             , board     :: Board
+data Generation = Generation { width     :: !Int
+                             , height    :: !Int
+                             , cellWidth :: !Float
+                             , genPerSec :: !Int
+                             , board     :: !Board
                              }
 
 randomBoard :: Width -> Height -> StdGen -> Board
