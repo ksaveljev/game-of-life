@@ -1,7 +1,7 @@
 Game of Life
 ============
 
-This is a project where I closely follow the code described by *Andrew Rademacher*
+This is a project where I closely follow the code described by **Andrew Rademacher**
 in his blog post [Haskell Optimization and the Game of Life](http://blog.headcrab.info/haskell-optimization-and-the-game-of-life/).
 The idea of the project was not only to implement the Game of Life but also to
 show how it can be optimized, in what ways we can identify the problematic
