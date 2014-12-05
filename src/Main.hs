@@ -7,6 +7,7 @@ import System.Console.CmdArgs (cmdArgs, (&=), help, Typeable, Data)
 import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort (ViewPort)
 import qualified Data.Vector as V
+import qualified Data.Vector.Generic as G
 
 import Life
 
@@ -44,7 +45,7 @@ makeNextGen _ _ = nextGeneration
 pictureGeneration :: Generation -> Picture
 pictureGeneration gen = Translate tx ty
                       $ Scale (cellWidth gen) (cellWidth gen)
-                      $ Pictures (V.toList (V.imap (pictureCell gen) (board gen)))
+                      $ Pictures (V.toList (V.imap (pictureCell gen) (G.convert (board gen) :: V.Vector Int)))
   where
     tx = negate ((cellWidth gen * w) / 2)
     ty = negate ((cellWidth gen * h) / 2)

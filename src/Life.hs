@@ -9,9 +9,11 @@ module Life ( Board
             ) where
 
 import System.Random
-import qualified Data.Vector as V
+import qualified Data.Vector.Unboxed as U
 
-type Board = V.Vector Int
+-- Way too many object created if we use boxed vector
+--type Board = V.Vector Int
+type Board = U.Vector Int
 type Width = Int
 type Height = Int
 
@@ -23,11 +25,11 @@ data Generation = Generation { width     :: Int
                              }
 
 randomBoard :: Width -> Height -> StdGen -> Board
-randomBoard w h = V.take (w * h) . V.unfoldr (Just . randomR (0, 1))
+randomBoard w h = U.take (w * h) . U.unfoldr (Just . randomR (0, 1))
 
 nextGeneration :: Generation -> Generation
 nextGeneration gen@(Generation w h cw gps brd) =
-    Generation w h cw gps (V.imap (nextCell gen) brd)
+    Generation w h cw gps (U.imap (nextCell gen) brd)
 
 getCoords :: Generation -> Int -> (Int, Int)
 getCoords !gen !idx = (x, y)
@@ -39,7 +41,7 @@ fromCoords :: Generation -> (Int, Int) -> Int
 fromCoords !gen (!x, !y) = x + (y * width gen)
 
 countAlive :: Generation -> Int
-countAlive (Generation _ _ _ _ brd) = V.sum brd
+countAlive (Generation _ _ _ _ brd) = U.sum brd
 
 nextCell :: Generation -> Int -> Int -> Int
 nextCell gen idx state
@@ -59,8 +61,8 @@ nextCell gen idx state
         + gn neg pos + gn zro pos + gn pos pos
     gn !mx !my
       | midx < 0 = 0
-      | midx >= V.length (board gen) = 0
-      | otherwise  = board gen V.! midx
+      | midx >= U.length (board gen) = 0
+      | otherwise  = board gen U.! midx
       where
         !midx = fromCoords gen (x + mx, y + my)
     neg = -1
