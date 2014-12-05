@@ -32,10 +32,7 @@ nextGeneration gen@(Generation w h cw gps brd) =
     Generation w h cw gps (U.imap (nextCell gen) brd)
 
 getCoords :: Generation -> Int -> (Int, Int)
-getCoords !gen !idx = (x, y)
-  where
-    !x = idx `mod` width gen
-    !y = idx `div` width gen
+getCoords !gen !idx = idx `quotRem` width gen
 
 fromCoords :: Generation -> (Int, Int) -> Int
 fromCoords !gen (!x, !y) = x + (y * width gen)
