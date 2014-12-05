@@ -14,8 +14,8 @@ data Profile = Profile { width_ :: Int
                        } deriving (Show, Typeable, Data)
 
 argsProfile :: Profile
-argsProfile = Profile { width_ = 100       &= help "The number of cells across the game board."
-                      , height_ = 100      &= help "The number of cells tall."
+argsProfile = Profile { width_       = 100 &= help "The number of cells across the game board."
+                      , height_      = 100 &= help "The number of cells tall."
                       , generations_ = 200 &= help "The number of generations to calculate."
                       }
 
