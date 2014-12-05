@@ -7,7 +7,6 @@ module Life ( Board
             ) where
 
 import System.Random
-import qualified Data.List as L
 import qualified Data.Vector as V
 
 type Board = V.Vector Int
@@ -47,9 +46,15 @@ nextCell gen idx state
   | otherwise = state
   where
     (x, y) = getCoords gen idx
+    {-
+    -- this way it creates a huge allocation rate
     nc = L.sum [ gn neg neg, gn zro neg, gn pos neg
                , gn neg zro, 0         , gn pos zro
                , gn neg pos, gn zro pos, gn pos pos]
+    -}
+    nc = gn neg neg + gn zro neg + gn pos neg
+       + gn neg zro + gn zro zro + gn pos zro
+       + gn neg pos + gn zro pos + gn pos pos
     gn mx my
       | midx < 0 = 0
       | midx >= V.length (board gen) = 0
