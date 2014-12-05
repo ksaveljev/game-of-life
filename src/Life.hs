@@ -28,20 +28,23 @@ randomBoard :: Width -> Height -> StdGen -> Board
 randomBoard w h = U.take (w * h) . U.unfoldr (Just . randomR (0, 1))
 
 nextGeneration :: Generation -> Generation
-nextGeneration gen@(Generation w h cw gps brd) =
+nextGeneration !gen@(Generation w h cw gps brd) =
     Generation w h cw gps (U.imap (nextCell gen) brd)
 
+{-# INLINE getCoords #-}
 getCoords :: Generation -> Int -> (Int, Int)
 getCoords !gen !idx = idx `quotRem` width gen
 
+{-# INLINE fromCoords #-}
 fromCoords :: Generation -> (Int, Int) -> Int
 fromCoords !gen (!x, !y) = x + (y * width gen)
 
 countAlive :: Generation -> Int
 countAlive (Generation _ _ _ _ brd) = U.sum brd
 
+{-# INLINE nextCell #-}
 nextCell :: Generation -> Int -> Int -> Int
-nextCell gen idx state
+nextCell !gen !idx !state
   | nc < 2 || nc > 3 = 0
   | nc == 3 = 1
   | otherwise = state
@@ -62,6 +65,6 @@ nextCell gen idx state
       | otherwise  = board gen U.! midx
       where
         !midx = fromCoords gen (x + mx, y + my)
-    neg = -1
-    pos = 1
-    zro = 0
+    !neg = -1
+    !pos = 1
+    !zro = 0
